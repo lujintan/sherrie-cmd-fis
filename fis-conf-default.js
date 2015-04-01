@@ -1,4 +1,4 @@
-module.exports = {
+var fisConf = {
     statics: '/static',
     templates: '/template',
     namespace: '',
@@ -14,7 +14,10 @@ module.exports = {
         parser : {
             less : 'less',
             tmpl: 'bdtmpl',
-            po: 'po'
+            po: 'po',
+            //custom--------------
+            scss: 'sass'
+            //custom--------------
         },
         preprocessor: {
             tpl: 'components, extlang',
@@ -35,7 +38,10 @@ module.exports = {
         ext : {
             less : 'css',
             tmpl : 'js',
-            po   : 'json'
+            po   : 'json',
+            //custom-----------------------
+            scss : 'css'
+            //custom-----------------------
         },
         path : [
             // i18n
@@ -114,7 +120,18 @@ module.exports = {
             {
                 reg: /^.+$/,
                 release: '${statics}/${namespace}$&'
+            },
+
+            //custom-------------------
+            {
+                reg: /\/static\/js\/app\/(?!.*[init]\.js$)[\s\S]+/,
+                isMod: true
+            },
+            {
+                reg: /\/static\/js\/core\/(?!.*[invoke]\.js$)[\s\S]+/,
+                isMod: true
             }
+            //custom-------------------
         ]
     },
     settings : {
@@ -128,7 +145,24 @@ module.exports = {
             jswrapper: {
                 type: 'amd'
             }
+        },
+
+        //---线上环境关闭console
+        'uglify-js' : {
+            compress : {
+                drop_console: true
+            }
+        },
+
+        //custom------------------
+        optimizer: {
+            'uglify-js': {
+                compress : {
+                    drop_console: true
+                }
+            }
         }
+        //custom------------------
     },
 
     component: {
@@ -139,3 +173,5 @@ module.exports = {
         skipRoadmapCheck: true
     }
 };
+
+module.exports = fisConf;
